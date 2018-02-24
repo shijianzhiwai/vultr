@@ -160,8 +160,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class
+        //log 查看器
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 
+        //权限系统
+        Zizaco\Entrust\EntrustServiceProvider::class,
+
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -210,7 +215,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class
     ],
 
 ];
