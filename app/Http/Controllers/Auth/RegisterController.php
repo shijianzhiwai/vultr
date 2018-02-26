@@ -40,6 +40,18 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    //禁止注册-----------------------------
+    public function showRegistrationForm()
+    {
+        return response("error");
+    }
+
+    public function register()
+    {
+        return response((object)[]);
+    }
+    //禁止注册-----------------------------
+
     /**
      * Get a validator for an incoming registration request.
      *
