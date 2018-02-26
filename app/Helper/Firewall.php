@@ -12,15 +12,20 @@ use GuzzleHttp\Client;
 
 class Firewall
 {
+    //请求基础URL
+    const URL = 'https://api.vultr.com/';
+
+    //API版本
     public static $version = 'v1';
 
+    //请求HTTP client
     public static $client = null;
 
     public static function getClient()
     {
         if (self::$client === null) {
             self::$client = $client = new Client([
-                'base_uri' => 'https://api.vultr.com/' . self::$version . '/',
+                'base_uri' => self::URL . self::$version . '/',
                 'timeout'  => 10.0,
             ]);
         }
@@ -37,7 +42,6 @@ class Firewall
                 ],
                 'form_params' => $post_pm,
             ]);
-
             return \GuzzleHttp\json_decode($response->getBody(), 1);
 
         }catch (\Exception $exception){
