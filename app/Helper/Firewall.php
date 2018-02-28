@@ -42,6 +42,7 @@ class Firewall
                 ],
                 'form_params' => $post_pm,
             ]);
+
             return \GuzzleHttp\json_decode($response->getBody(), 1);
 
         }catch (\Exception $exception){

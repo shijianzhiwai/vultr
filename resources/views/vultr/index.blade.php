@@ -7,10 +7,9 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
 </head>
 <body>
     <div id="app"></div>
-    <script src="{{ mix('js/uiApp.js') }}"></script>
+    <script src="{{ mix('js/vultr.js') }}"></script>
 </body>
 </html>

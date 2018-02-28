@@ -19,6 +19,15 @@ class VultrController extends Controller
         return Response::vultr(Firewall::request('GET','firewall/group_list'));
     }
 
+    public function ruleList(Request $request)
+    {
+        return Response::vultr(Firewall::request('GET','firewall/rule_list', [
+            'FIREWALLGROUPID' => $request->input('fireid'),
+            'direction' => 'in',
+            'ip_type' => 'v4',
+        ]));
+    }
+
     public function user(Request $request)
     {
         return Response::vultr($request->user());
