@@ -27,4 +27,8 @@ Route::prefix('api/vultr')->middleware('auth.api', 'throttle:60,1')->group(funct
     $route->get('fire_list', 'VultrController@fireList');
     $route->get('user', 'VultrController@user');
     $route->get('rule_list', 'VultrController@ruleList');
+    $route->get('ip_list', function (){
+        return new App\Http\Resources\IpCollection(App\Ip::all());
+    });
+    $route->post('ip_create', 'VultrController@createIp');
 });

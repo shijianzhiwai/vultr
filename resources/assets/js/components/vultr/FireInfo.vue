@@ -29,6 +29,24 @@
                     prop="subnet_size"
                     label="subnet_size">
             </el-table-column>
+            <el-table-column
+                    prop="remark"
+                    label="remark">
+            </el-table-column>
+            <!--<el-table-column-->
+                    <!--fixed="right"-->
+                    <!--label="操作"-->
+                    <!--width="120">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<el-button-->
+                            <!--plain-->
+                            <!--@click.native.prevent="deleteFire(scope.$index, tableData4)"-->
+                            <!--type="warning"-->
+                            <!--size="small">-->
+                        <!--删除-->
+                    <!--</el-button>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
         </el-table>
     </el-container>
 </template>
@@ -64,6 +82,9 @@
                         this.loading = false;
                     }
                 );
+            },
+            deleteFire() {
+
             }
         },
         watch: {

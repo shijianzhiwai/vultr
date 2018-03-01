@@ -2,6 +2,7 @@ import App from './components/vultr/App';
 import Vue from 'vue';
 import router from './router/vultr';
 import ElementUi from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUi);
 
@@ -34,7 +35,6 @@ window.axios.interceptors.response.use(response => response, error => {
     return Promise.reject(error);
 });
 
-
 app = new Vue({
     el: '#app',
     router,
@@ -52,4 +52,10 @@ app = new Vue({
             dialogVal: {info: ''},
         }
     }
+});
+
+window.axios.post('/api/vultr/ip_create').then(function (response) {
+    console.log(response);
+}).catch(function (error) {
+    console.log(error);
 });
