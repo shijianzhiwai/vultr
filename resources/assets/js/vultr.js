@@ -27,11 +27,10 @@ window.axios.interceptors.response.use(response => response, error => {
         window.location.href = '/login?r=' + window.location.href;
         return;
     }
-    if (error.response.status === 403) { //forbid 错误
-        app.share.dialogVisible = true;
-        app.share.dialogVal.info = 'Http Error Code: 403';
-        return;
-    }
+
+    app.share.dialogVisible = true;
+    app.share.dialogVal.info = 'Http Error Code: '+error.response.status;
+
     return Promise.reject(error);
 });
 
@@ -52,10 +51,4 @@ app = new Vue({
             dialogVal: {info: ''},
         }
     }
-});
-
-window.axios.post('/api/vultr/ip_create').then(function (response) {
-    console.log(response);
-}).catch(function (error) {
-    console.log(error);
 });

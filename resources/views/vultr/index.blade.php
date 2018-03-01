@@ -7,6 +7,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>vultr管理后台</title>
 </head>
 <body>
     <div id="app"></div>
