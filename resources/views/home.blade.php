@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <a href="/vultr">vultr 管理</a>
                 </div>
             </div>
         </div>
