@@ -68,8 +68,14 @@ class VultrController extends Controller
             }
 
             foreach ($list as $key => &$value) {
+                $value['remark'] = '';
                 if ($value['subnet'] !== '0.0.0.0' && isset($ip_mark_list[$value['subnet']])) {
                     $value['remark'] = $ip_mark_list[$value['subnet']];
+                }
+
+                $port = config('vultr.port');
+                if (isset($port[$value['port']])) {
+                    $value['remark'] = $value['remark'] . '(' . $port[$value['port']] . ')';
                 }
             }
 
