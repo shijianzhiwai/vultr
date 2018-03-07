@@ -166,6 +166,7 @@ return [
         //权限系统
         Zizaco\Entrust\EntrustServiceProvider::class,
 
+        //调试系统  生产环境不打开
         Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
@@ -215,7 +216,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class
+
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class, //权限系统
     ],
 
 ];
