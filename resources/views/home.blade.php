@@ -13,8 +13,10 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <a href="/vultr">vultr 管理</a>
+                    <ul>
+                        <li><a href="/vultr">vultr 管理</a></li>
+                        <li><a href="/logs">日志</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
