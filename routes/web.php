@@ -21,7 +21,7 @@ Route::middleware('auth')->get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewer
 
 Route::get('/vultr', 'VultrController@index');
 
-Route::prefix('api/vultr')->middleware('auth.api', 'throttle:60,1')->group(function ($route) {
+Route::prefix('api/vultr')->middleware('auth.api', 'throttle:600,1')->group(function ($route) {
     $route->get('fire_list', 'VultrController@fireList');
     $route->get('user', 'VultrController@user');
     $route->get('rule_list', 'VultrController@ruleList');

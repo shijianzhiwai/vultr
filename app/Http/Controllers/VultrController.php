@@ -34,12 +34,6 @@ class VultrController extends Controller
         return Response::vultr($request->user());
     }
 
-    //ip列表
-    public function ipList()
-    {
-        return \response(Ip::all());
-    }
-
     public function createIp(Request $request)
     {
         $this->validate($request, [
