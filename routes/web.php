@@ -32,3 +32,4 @@ Route::prefix('api/vultr')->middleware('auth.api', 'throttle:600,1')->group(func
 Route::apiResource('api/vultr/ips', 'IpController')->middleware('auth.api', 'throttle:60,1');
 
 Route::get('/doc/{path}', 'DocController@index')->where('path', '.*')->middleware('auth');
+Route::get('/doc', 'DocController@index')->middleware('auth');

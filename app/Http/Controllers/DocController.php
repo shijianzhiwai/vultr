@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Helper\Mime;
 use GuzzleHttp\Client;
 
 class DocController extends Controller
 {
-    //
-    public function index(Request $request, $path)
+
+    public function index(Request $request, $path='')
     {
         $client = new Client([
             'base_uri' => 'http://localhost:5555/',
@@ -18,8 +17,7 @@ class DocController extends Controller
 
         try{
             $response = $client->request('GET', $path . '?' . http_build_query($request->query()));
-
-            if ($response->getStatusCode() !== '200') {
+            if ($response->getStatusCode() != '200') {
                 return abort(404);
             }
 
