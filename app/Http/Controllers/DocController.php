@@ -32,7 +32,9 @@ class DocController extends Controller
     {
         $json = \json_decode($request->getContent(), 1);
         if (is_array($json) && $json['password'] == 'asjfjasbd') {
-            file_put_contents(storage_path('git') . '/git.log','');
+            $dir = storage_path('git') . '/git.log';
+            file_put_contents($dir,'');
+            chmod($dir, 0777);
             return response('ok');
         }
 
