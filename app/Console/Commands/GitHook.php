@@ -45,6 +45,8 @@ class GitHook extends Command
             file_put_contents($lock_dir,'');
             chmod($dir, 0777);
 
+            //git 更新
+            system("cd /data/youyudoc && git pull");
             //构建gitbook
             system("cd /data/youyudoc && gitbook build");
 
