@@ -16,6 +16,7 @@
                     <ul>
                         <li><a href="/vultr">vultr 管理</a></li>
                         <li><a href="/logs">日志</a></li>
+                        <li><a href="/doc/index.html ">文档</a></li>
                     </ul>
                 </div>
             </div>
