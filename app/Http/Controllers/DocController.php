@@ -25,9 +25,17 @@ class DocController extends Controller
             return abort(404);
         }
 
-
         return response($response->getBody(), 200 ,['Content-Type'=> $response->getHeader('Content-Type')] );
+    }
 
+    public function gitPush(Request $request)
+    {
+        $json = \json_decode($request->getContent(), 1);
+        if (is_array($json) && $json['password'] == 'asjfjasbd') {
+            file_put_contents(storage_path('git') . '/git.log','');
+            return response('ok');
+        }
 
+        return response('error');
     }
 }
