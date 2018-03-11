@@ -10,6 +10,10 @@ class DocController extends Controller
 
     public function index(Request $request, $path='')
     {
+
+        response('')->cookie('docpass', 'youyudocshijianzhiwai123', time()+3600*24*30, '/', 'oftime.me');
+        return redirect('https://youyudoc.oftime.me/');
+        /*
         $client = new Client([
             'base_uri' => 'http://localhost:5555/',
             'timeout'  => 10.0,
@@ -26,6 +30,7 @@ class DocController extends Controller
         }
 
         return response($response->getBody(), 200 ,['Content-Type'=> $response->getHeader('Content-Type')] );
+        */
     }
 
     public function gitPush(Request $request)
