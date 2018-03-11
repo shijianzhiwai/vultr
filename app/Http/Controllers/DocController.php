@@ -11,9 +11,8 @@ class DocController extends Controller
 
     public function index(Request $request, $path='')
     {
-
-        Cookie::queue('docpass', 'youyudocshijianzhiwai123', time()+3600*24*30, '/', '.oftime.me');
-        return redirect('https://youyudoc.oftime.me/');
+        return redirect('https://youyudoc.oftime.me/')
+            ->cookie('docpass', 'youyudocshijianzhiwai123', time()+3600*24*30, '/', '.oftime.me');
         /*
         $client = new Client([
             'base_uri' => 'http://localhost:5555/',
