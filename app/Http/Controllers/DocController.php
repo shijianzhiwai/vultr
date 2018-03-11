@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cookie;
 
 class DocController extends Controller
 {
@@ -11,7 +12,7 @@ class DocController extends Controller
     public function index(Request $request, $path='')
     {
 
-        response('')->cookie('docpass', 'youyudocshijianzhiwai123', time()+3600*24*30, '/', 'oftime.me');
+        Cookie::queue('docpass', 'youyudocshijianzhiwai123', time()+3600*24*30, '/', '.oftime.me');
         return redirect('https://youyudoc.oftime.me/');
         /*
         $client = new Client([
