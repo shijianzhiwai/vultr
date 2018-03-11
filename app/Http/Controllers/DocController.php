@@ -12,7 +12,7 @@ class DocController extends Controller
     public function index(Request $request, $path='')
     {
         return redirect('https://youyudoc.oftime.me/')
-            ->cookie('docpass', 'youyudocshijianzhiwai123', 60*24*30, '/', 'oftime.me');
+            ->cookie('docpass', 'youyudocshijianzhiwai123', 60*24*30, '/', 'youyudoc.oftime.me');
         /*
         $client = new Client([
             'base_uri' => 'http://localhost:5555/',
