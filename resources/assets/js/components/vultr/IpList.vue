@@ -33,14 +33,14 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog title="编辑" :visible.sync="editOpen" width="30%" center>
+        <el-dialog title="编辑" :visible.sync="editOpen" width="500px" center>
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="ID">
                     <el-input v-model="form.id" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="IP">
-                    <div style="height: 40px;width: 400px">
-                        <div style="width: 300px;float: left">
+                    <div style="height: 40px;width: 100%">
+                        <div style="width: 70%;float: left">
                             <span><el-input v-model="form.ip" maxlength="40px"></el-input></span>
                         </div>
                         <div style="float: right">
