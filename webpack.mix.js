@@ -11,6 +11,6 @@ let mix = require('laravel-mix');
  |
  */
 
+//框架自带的文件，已经编译，不需要再编译
 mix.js('resources/assets/js/app.js', 'public/js')
-   .js('resources/assets/js/vultr.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+    .sass('resources/assets/sass/app.scss', 'public/css');

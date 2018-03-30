@@ -33,21 +33,21 @@
                     prop="remark"
                     label="remark">
             </el-table-column>
-            <!--<el-table-column-->
-                    <!--fixed="right"-->
-                    <!--label="操作"-->
-                    <!--width="120">-->
-                <!--<template slot-scope="scope">-->
-                    <!--<el-button-->
-                            <!--plain-->
-                            <!--@click.native.prevent="deleteFire(scope.$index, tableData4)"-->
-                            <!--type="warning"-->
-                            <!--size="small">-->
-                        <!--删除-->
-                    <!--</el-button>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column
+                    fixed="right"
+                    label="edit"
+                    width="120">
+                <template slot-scope="scope">
+                    <el-button @click="editFire(scope.$index, scope.row.rulenumber)" type="primary"
+                               icon="el-icon-edit"
+                               circle></el-button>
+                    <el-button @click="deleteFire(scope.$index , scope.row.rulenumber)" type="danger"
+                               icon="el-icon-delete"
+                               circle></el-button>
+                </template>
+            </el-table-column>
         </el-table>
+
     </el-container>
 </template>
 <style>
@@ -72,6 +72,43 @@
         }
     }
 
+    async function deleteRule(id, rule) {
+        try {
+            const response = await window.axios.post('/api/vultr/rule_delete', {
+                fireid: id,
+                rulenumber: rule
+            });
+            return response.data.data;
+        } catch (error) {
+            console.log(error);
+            return 500;
+        }
+    }
+
+    function msgOpen(that, info, index, rule) {
+        that.$confirm(info, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+            that.$message('删除中...');
+            deleteRule(that.$route.params.fireid, rule).then(
+                res => {
+                    if (res === 500) {
+                        return;
+                    }
+                    that.tableData.splice(index, 1);
+                    that.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }
+            );
+        }).catch(() => {
+
+        });
+    }
+
     export default {
         methods: {
             refreshData() {
@@ -83,7 +120,10 @@
                     }
                 );
             },
-            deleteFire() {
+            deleteFire(index, rule) {
+                msgOpen(this, "确认删除编号为" + rule + "的防火墙规则？", index, rule)
+            },
+            editFire(index, rule) {
 
             }
         },
@@ -93,7 +133,7 @@
         data() {
             return {
                 tableData: [],
-                loading:true
+                loading: true,
             }
         },
         created() {

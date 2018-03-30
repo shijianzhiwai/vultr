@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\Response;
 use App\Ip;
 use Illuminate\Http\Request;
 use App\Http\Resources\IpCollection;
@@ -13,69 +14,43 @@ class IpController extends Controller
         return  new IpCollection(Ip::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Ip  $ip
-     * @return \Illuminate\Http\Response
-     */
     public function show(Ip $ip)
     {
-        //
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Ip  $ip
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ip $ip)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Ip  $ip
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Ip $ip)
     {
-        //
+        $ip->ip = $request->input('ip');
+        $ip->remark = $request->input('remark');
+        $ip->save();
+        return Response::vultr('');
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Ip  $ip
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Ip $ip
+     * @return $this|\Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
-    public function destroy(Ip $ip)
+    public function destroy(Request $request, Ip $ip)
     {
-        //
+        $ip->delete();
+        return Response::vultr('');
+    }
+
+    public function myIp(Request $request)
+    {
+        return $request->getClientIp();
     }
 }

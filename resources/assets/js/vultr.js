@@ -2,7 +2,7 @@ import App from './components/vultr/App';
 import Vue from 'vue';
 import router from './router/vultr';
 import ElementUi from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css'
+import "element-ui/lib/theme-chalk/index.css";
 
 Vue.use(ElementUi);
 
@@ -29,7 +29,7 @@ window.axios.interceptors.response.use(response => response, error => {
     }
 
     app.share.dialogVisible = true;
-    app.share.dialogVal.info = 'Http Error Code: '+error.response.status;
+    app.share.dialogVal.info = '请求错误（http status）：'+error.response.status;
 
     return Promise.reject(error);
 });

@@ -29,17 +29,17 @@ class VultrController extends Controller
         ])));
     }
 
+    public function ruleDelete(Request $request)
+    {
+        return Response::vultr(Firewall::request('POST', 'firewall/rule_delete', [], [
+            'FIREWALLGROUPID' => $request->input('fireid'),
+            'rulenumber' => $request->input('rulenumber'),
+        ]));
+    }
+
     public function user(Request $request)
     {
         return Response::vultr($request->user());
-    }
-
-    public function createIp(Request $request)
-    {
-        $this->validate($request, [
-            'ip' => 'required|unique:ip|ipv4',
-            'remark' => 'required|max:100',
-        ]);
     }
 
     protected function formatRuleList($list)

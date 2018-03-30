@@ -45,6 +45,11 @@ class Firewall
 
             return \GuzzleHttp\json_decode($response->getBody(), 1);
 
+        }catch (\InvalidArgumentException $exception){
+            if ($type == 'POST') {
+                return [];
+            }
+            return 403;
         }catch (\Exception $exception){
             return 403;
         }
