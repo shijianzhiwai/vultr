@@ -37,6 +37,20 @@ class VultrController extends Controller
         ]));
     }
 
+    /**
+     * @param Request $request
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function ruleEdit(Request $request)
+    {
+        $pm = \App\Helper\Request::validator($request->all(), [
+            'protocol' => 'bail|required',
+            'subnet' => 'bail|required',
+            'subnet_size' => 'bail|required',
+            'port' => 'bail|required',
+        ]);
+    }
+
     public function user(Request $request)
     {
         return Response::vultr($request->user());

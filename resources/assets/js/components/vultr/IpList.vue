@@ -1,5 +1,8 @@
 <template>
     <el-container>
+        <el-header height="100%" style="background-color: #FFFFFF;padding-left: 8px;">
+            <el-button @click="addIp">增加IP信息</el-button>
+        </el-header>
         <el-table
                 :data="tableData"
                 style="width: 100%"
@@ -70,14 +73,21 @@
 </style>
 
 <script>
+    import {getIpData} from "../../func.js";
 
-    async function getData() {
+    async function reqAddIp(form) {
         try {
-            const response = await window.axios.get('/api/vultr/ips');
-            return response.data.data;
+            let params = new URLSearchParams();
+            params.append('ip', form.ip);
+            params.append('remark', form.remark);
+            const response = await window.axios.post('/api/vultr/ips', params, {
+                headers:
+                    {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+            return response.data;
         } catch (error) {
             console.log(error);
-            return {};
+            return 500;
         }
     }
 
@@ -106,7 +116,7 @@
             return 500;
         }
     }
-    
+
     async function getIp() {
         try {
             const response = await window.axios.get('/my_ip');
@@ -116,21 +126,22 @@
             return 500;
         }
     }
-    
+
     export default {
+        addFlag: false,
         methods: {
             refreshData() {
                 this.loading = true;
-                getData().then(
+                getIpData().then(
                     result => {
                         this.tableData = Object.keys(result).map(key => result[key]);
                         this.loading = false;
                     }
                 );
             },
-            getIp(){
-                getIp().then(result=>{
-                    if (result === 500){
+            getIp() {
+                getIp().then(result => {
+                    if (result === 500) {
                         this.$message('获取失败');
                     } else {
                         this.$message('获取成功');
@@ -161,7 +172,17 @@
 
                 });
             },
+            addIp() {
+                this.addFlag = true;
+                this.editOpen = true;
+                this.form = {
+                    id : "自动生成",
+                    ip: "",
+                    remark: "",
+                };
+            },
             editIp(index) {
+                this.addFlag = false;
                 this.editOpen = true;
                 //拷贝数据
                 this.form = Object.assign({}, this.tableData[index]);
@@ -169,23 +190,45 @@
             },
             putIp(index) {
                 this.editOpen = false;
-                this.$message('更新中...');
-                reqEditIp(this.form).then(
-                    res => {
-                        if (res === 500) {
-                            return;
+                if (this.addFlag) {
+                    this.$message('添加中...');
+                    reqAddIp(this.form).then(
+                        res => {
+                            if (res === 500) {
+                                return;
+                            }
+                            let data = res.data.data;
+                            this.tableData.push({
+                                id: data.id,
+                                ip: data.ip,
+                                remark: data.remark,
+                                created_at: data.created_at,
+                            });
+
+                            this.$message({
+                                type: 'success',
+                                message: '添加成功!'
+                            });
                         }
+                    );
+                } else {
+                    this.$message('更新中...');
+                    reqEditIp(this.form).then(
+                        res => {
+                            if (res === 500) {
+                                return;
+                            }
+                            let cache = this.tableData[index];
+                            cache.ip = this.form.ip;
+                            cache.remark = this.form.remark;
 
-                        let cache = this.tableData[index];
-                        cache.ip = this.form.ip;
-                        cache.remark = this.form.remark;
-
-                        this.$message({
-                            type: 'success',
-                            message: '更新成功!'
-                        });
-                    }
-                );
+                            this.$message({
+                                type: 'success',
+                                message: '更新成功!'
+                            });
+                        }
+                    );
+                }
             }
         },
         watch: {

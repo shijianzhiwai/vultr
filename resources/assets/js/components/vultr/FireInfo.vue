@@ -38,7 +38,7 @@
                     label="edit"
                     width="120">
                 <template slot-scope="scope">
-                    <el-button @click="editFire(scope.$index, scope.row.rulenumber)" type="primary"
+                    <el-button @click="editFire(scope.$index)" type="primary"
                                icon="el-icon-edit"
                                circle></el-button>
                     <el-button @click="deleteFire(scope.$index , scope.row.rulenumber)" type="danger"
@@ -47,7 +47,43 @@
                 </template>
             </el-table-column>
         </el-table>
-
+        <el-dialog title="编辑" :visible.sync="editOpen" width="500px" center>
+            <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="rulenumber">
+                    <el-input v-model="form.rulenumber" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="protocol">
+                    <el-select @change="protocolChange" class="select" v-model="form.protocol" placeholder="请选择">
+                        <el-option
+                                v-for="item in protocols"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="port">
+                    <el-input :disabled="portOpen" v-model="form.port"></el-input>
+                </el-form-item>
+                <el-form-item label="subnet">
+                    <el-select class="select" v-model="form.subnet" placeholder="请选择">
+                        <el-option
+                                v-for="item in subnets"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="subnet_size">
+                    <el-input v-model="form.subnet_size"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="editOpen = false">取 消</el-button>
+                <el-button type="primary" @click="putRule(form.index)">确 定</el-button>
+            </div>
+        </el-dialog>
     </el-container>
 </template>
 <style>
@@ -58,9 +94,14 @@
     .el-table .success-row {
         background: #f0f9eb;
     }
+
+    .select {
+        width: 100%;
+    }
 </style>
 
 <script>
+    import {getIpData} from "../../func.js";
 
     async function getData(id) {
         try {
@@ -123,8 +164,29 @@
             deleteFire(index, rule) {
                 msgOpen(this, "确认删除编号为" + rule + "的防火墙规则？", index, rule)
             },
-            editFire(index, rule) {
-
+            editFire(index) {
+                this.editOpen = true;
+                this.form = Object.assign({}, this.tableData[index]);
+                this.form.index = index;
+                this.form.protocol === 'icmp' ? this.portOpen = true : this.portOpen = false;
+                this.subnets = []; //重新初始化
+                getIpData().then(
+                    result => {
+                        Object.keys(result).forEach(key => {
+                            this.subnets.push({
+                                label: result[key].ip + `(${result[key].remark})`,
+                                value: result[key].ip
+                            })
+                        });
+                        this.subnets.push({
+                            label: '0.0.0.0(all)',
+                            value: '0.0.0.0'
+                        });
+                    }
+                );
+            },
+            protocolChange() {
+                this.form.protocol === 'icmp' ? this.portOpen = true : this.portOpen = false;
             }
         },
         watch: {
@@ -134,6 +196,28 @@
             return {
                 tableData: [],
                 loading: true,
+                editOpen: false,
+                form: {},
+                subnets: [],
+                portOpen: false,
+                protocols: [
+                    {
+                        value: 'icmp',
+                        label: 'icmp',
+                    },
+                    {
+                        value: 'tcp',
+                        label: 'tcp',
+                    },
+                    {
+                        value: 'udp',
+                        label: 'udp',
+                    },
+                    {
+                        value: 'gre',
+                        label: 'gre',
+                    }
+                ],
             }
         },
         created() {

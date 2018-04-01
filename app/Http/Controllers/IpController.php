@@ -14,14 +14,29 @@ class IpController extends Controller
         return  new IpCollection(Ip::all());
     }
 
+
     public function create()
     {
 
     }
 
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function store(Request $request)
     {
+        $pm = \App\Helper\Request::validator($request->all(),[
+            'ip' => 'bail|required|ipv4',
+            'remark' => 'bail|required',
+        ]);
 
+        $ip = new Ip;
+        $ip->ip = $pm['ip'];
+        $ip->remark = $pm['remark'];
+        $ip->save();
+        return Response::vultr(['data' => $ip->toArray()]);
     }
 
     public function show(Ip $ip)
@@ -29,10 +44,21 @@ class IpController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @param Ip $ip
+     * @return $this|\Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function update(Request $request, Ip $ip)
     {
-        $ip->ip = $request->input('ip');
-        $ip->remark = $request->input('remark');
+        $pm = \App\Helper\Request::validator($request->all(),[
+            'ip' => 'bail|required|ipv4',
+            'remark' => 'bail|required',
+        ]);
+
+        $ip->ip = $pm['ip'];
+        $ip->remark = $pm['remark'];
         $ip->save();
         return Response::vultr('');
     }
