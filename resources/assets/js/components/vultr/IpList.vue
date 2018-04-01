@@ -38,7 +38,7 @@
         </el-table>
         <el-dialog title="编辑" :visible.sync="editOpen" width="500px" center>
             <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="ID">
+                <el-form-item label="ID" v-if="!addFlag">
                     <el-input v-model="form.id" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="IP">
@@ -128,7 +128,6 @@
     }
 
     export default {
-        addFlag: false,
         methods: {
             refreshData() {
                 this.loading = true;
@@ -240,6 +239,7 @@
                 loading: true,
                 editOpen: false,
                 form: {},
+                addFlag: false,
             }
         },
         created() {
