@@ -1,5 +1,8 @@
 <template>
     <el-container>
+        <el-header height="100%" style="background-color: #FFFFFF;padding-left: 8px;">
+            <el-button @click="addFire">增加防火墙信息</el-button>
+        </el-header>
         <el-table
                 :data="tableData"
                 style="width: 100%"
@@ -47,9 +50,9 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog title="编辑" :visible.sync="editOpen" width="500px" center>
+        <el-dialog :title="title" :visible.sync="editOpen" width="500px" center>
             <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="rulenumber">
+                <el-form-item label="rulenumber" v-if="!isEdit">
                     <el-input v-model="form.rulenumber" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="protocol">
@@ -113,6 +116,24 @@
         }
     }
 
+    async function addRule(form, fireid) {
+        try {
+            let params = new URLSearchParams();
+            params.append('port', form.port);
+            params.append('fireid', fireid);
+            params.append('protocol', form.protocol);
+            params.append('subnet', form.subnet);
+            params.append('subnet_size', form.subnet_size);
+            const response = await window.axios.post('/api/vultr/rule_add', params, {
+                header: {'Content-Type': 'application/x-www-form-urlencoded'},
+            });
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return 500;
+        }
+    }
+
     async function deleteRule(id, rule) {
         try {
             const response = await window.axios.post('/api/vultr/rule_delete', {
@@ -166,10 +187,12 @@
             },
             editFire(index) {
                 this.editOpen = true;
+                this.isEdit = false;
                 this.form = Object.assign({}, this.tableData[index]);
                 this.form.index = index;
                 this.form.protocol === 'icmp' ? this.portOpen = true : this.portOpen = false;
                 this.subnets = []; //重新初始化
+                this.title = "编辑";
                 getIpData().then(
                     result => {
                         Object.keys(result).forEach(key => {
@@ -187,6 +210,52 @@
             },
             protocolChange() {
                 this.form.protocol === 'icmp' ? this.portOpen = true : this.portOpen = false;
+            },
+            addFire() {
+                this.editOpen = true;
+                this.isEdit = true;
+                this.form.subnet = null;
+                this.form.port = "";
+                this.form.index = 0;
+                this.form.subnet_size = 32;
+                this.subnets = []; //重新初始化
+                this.title = "添加";
+                getIpData().then(
+                    result => {
+                        Object.keys(result).forEach(key => {
+                            this.subnets.push({
+                                label: result[key].ip + `(${result[key].remark})`,
+                                value: result[key].ip
+                            })
+                        });
+                        this.subnets.push({
+                            label: '0.0.0.0(all)',
+                            value: '0.0.0.0'
+                        });
+                    }
+                );
+            },
+            putRule(index) {
+                this.editOpen = false;
+                if (index === 0) { //证明是添加状态
+                    this.$message('添加中');
+                    addRule(this.form, this.$route.params.fireid).then(
+                        res => {
+                            if (res === 500) {
+                                return;
+                            }
+                            this.$message({
+                                type: 'success',
+                                message: '添加成功'
+                            });
+
+                            //刷新列表
+                            this.refreshData();
+                        }
+                    )
+                } else {
+
+                }
             }
         },
         watch: {
@@ -197,9 +266,17 @@
                 tableData: [],
                 loading: true,
                 editOpen: false,
-                form: {},
+                isEdit: false,
+                form: {
+                    subnet: null,
+                    port:"",
+                    index:0,
+                    subnet_size:32,
+                    protocol:null
+                },
                 subnets: [],
                 portOpen: false,
+                title:"",
                 protocols: [
                     {
                         value: 'icmp',

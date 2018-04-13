@@ -26,6 +26,7 @@ Route::prefix('api/vultr')->middleware('auth.api', 'throttle:600,1')->group(func
     $route->get('user', 'VultrController@user');
     $route->get('rule_list', 'VultrController@ruleList');
     $route->post('rule_delete', 'VultrController@ruleDelete');
+    $route->post('rule_add', 'VultrController@ruleAdd');
     $route->apiResource('ips', 'IpController');
 });
 Route::get('my_ip','IpController@myIp');

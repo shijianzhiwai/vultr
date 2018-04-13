@@ -36,7 +36,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog title="编辑" :visible.sync="editOpen" width="500px" center>
+        <el-dialog :title="title" :visible.sync="editOpen" width="500px" center>
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="ID" v-if="!addFlag">
                     <el-input v-model="form.id" :disabled="true"></el-input>
@@ -174,6 +174,7 @@
             addIp() {
                 this.addFlag = true;
                 this.editOpen = true;
+                this.title = "添加";
                 this.form = {
                     id : "自动生成",
                     ip: "",
@@ -183,6 +184,7 @@
             editIp(index) {
                 this.addFlag = false;
                 this.editOpen = true;
+                this.title = "编辑";
                 //拷贝数据
                 this.form = Object.assign({}, this.tableData[index]);
                 this.form.index = index;
@@ -240,6 +242,7 @@
                 editOpen: false,
                 form: {},
                 addFlag: false,
+                title:"",
             }
         },
         created() {

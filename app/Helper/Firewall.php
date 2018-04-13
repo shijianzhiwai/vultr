@@ -9,6 +9,7 @@
 namespace App\Helper;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Log;
 
 class Firewall
 {
@@ -51,6 +52,7 @@ class Firewall
             }
             return 403;
         }catch (\Exception $exception){
+            Log::info($exception->getMessage());//记录错误日志
             return 403;
         }
 
