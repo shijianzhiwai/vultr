@@ -9,8 +9,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>vultr管理后台</title>
-<link href="/css/vultr/vultr.css?726ee74ba66c43bbad6d" rel="stylesheet"></head>
+<link href="/css/vultr/vultr.css?a7ebfece70351a7988d0" rel="stylesheet"></head>
 <body>
 <div id="app"></div>
-<script type="text/javascript" src="/js/vendor.js?726ee74ba66c43bbad6d"></script><script type="text/javascript" src="/js/lib.js?726ee74ba66c43bbad6d"></script><script type="text/javascript" src="/js/vultr.js?726ee74ba66c43bbad6d"></script></body>
+<script type="text/javascript" src="/js/vendor.js?a7ebfece70351a7988d0"></script><script type="text/javascript" src="/js/lib.js?a7ebfece70351a7988d0"></script><script type="text/javascript" src="/js/vultr.js?a7ebfece70351a7988d0"></script></body>
 </html>

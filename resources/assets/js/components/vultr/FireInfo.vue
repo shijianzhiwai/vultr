@@ -52,7 +52,11 @@
         </el-table>
         <el-dialog :title="title" :visible.sync="editOpen" width="500px" center>
             <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="rulenumber" v-if="!isEdit">
+                <el-row style="margin-left:80px;line-height:40px;">
+                    <el-button @click="tip('SSR')" size="mini">SSR</el-button>
+                    <el-button @click="tip('SSH')" size="mini">SSH</el-button>
+                </el-row>
+                <el-form-item label="rulenumber" v-if="isEdit">
                     <el-input v-model="form.rulenumber" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="protocol">
@@ -173,6 +177,15 @@
 
     export default {
         methods: {
+            tip(tip){
+                if (tip === 'SSR') {
+                    this.form.port = '57483';
+                    this.form.protocol = "tcp";
+                } else if(tip === 'SSH') {
+                    this.form.port = '22';
+                    this.form.protocol = "tcp";
+                }
+            },
             refreshData() {
                 this.loading = true;
                 getData(this.$route.params.fireid).then(
@@ -187,7 +200,7 @@
             },
             editFire(index) {
                 this.editOpen = true;
-                this.isEdit = false;
+                this.isEdit = true;
                 this.form = Object.assign({}, this.tableData[index]);
                 this.form.index = index;
                 this.form.protocol === 'icmp' ? this.portOpen = true : this.portOpen = false;
@@ -213,7 +226,7 @@
             },
             addFire() {
                 this.editOpen = true;
-                this.isEdit = true;
+                this.isEdit = false;
                 this.form.subnet = null;
                 this.form.port = "";
                 this.form.index = 0;
