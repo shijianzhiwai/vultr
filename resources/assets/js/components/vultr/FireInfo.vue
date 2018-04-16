@@ -185,6 +185,7 @@
                     this.form.port = '22';
                     this.form.protocol = "tcp";
                 }
+                this.protocolChange()
             },
             refreshData() {
                 this.loading = true;
