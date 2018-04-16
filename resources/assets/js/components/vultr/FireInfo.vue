@@ -227,7 +227,8 @@
             addFire() {
                 this.editOpen = true;
                 this.isEdit = false;
-                this.form.subnet = null;
+                this.form.protocol = "";
+                this.form.subnet = "";
                 this.form.port = "";
                 this.form.index = 0;
                 this.form.subnet_size = 32;
@@ -251,7 +252,7 @@
             putRule(index) {
                 this.editOpen = false;
                 if (index === 0) { //证明是添加状态
-                    this.$message('添加中');
+                    this.$message('添加中...');
                     addRule(this.form, this.$route.params.fireid).then(
                         res => {
                             if (res === 500) {
@@ -267,7 +268,33 @@
                         }
                     )
                 } else {
+                    //证明是编辑状态
+                    this.$message('删除中...');
+                    deleteRule(this.$route.params.fireid, this.form.rulenumber).then(
+                        res => {
+                            if (res === 500) {
+                                return;
+                            }
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功! => 正在添加...'
+                            });
+                            addRule(this.form, this.$route.params.fireid).then(
+                                res => {
+                                    if (res === 500) {
+                                        return;
+                                    }
+                                    this.$message({
+                                        type: 'success',
+                                        message: '添加成功'
+                                    });
 
+                                    //刷新列表
+                                    this.refreshData();
+                                }
+                            )
+                        }
+                    );
                 }
             }
         },
@@ -281,11 +308,11 @@
                 editOpen: false,
                 isEdit: false,
                 form: {
-                    subnet: null,
+                    subnet: "",
                     port:"",
                     index:0,
                     subnet_size:32,
-                    protocol:null
+                    protocol:""
                 },
                 subnets: [],
                 portOpen: false,
