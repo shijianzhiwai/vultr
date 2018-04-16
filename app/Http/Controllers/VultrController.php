@@ -62,6 +62,11 @@ class VultrController extends Controller {
         return Response::vultr($request->user());
     }
 
+    public function serverList() {
+        $data = Firewall::request('GET', 'server/list');
+        return ['data' => $data, 'display' => \json_encode($data)];
+    }
+
     protected function formatRuleList($list) {
         if (is_array($list)) {
             $need_select = [];
