@@ -48,7 +48,7 @@ class GitHook extends Command
             //git 更新
             system("cd /data/youyudoc && git pull");
             //构建gitbook
-            system("cd /data/youyudoc && gitbook install");
+            // system("cd /data/youyudoc && gitbook install");
             system("cd /data/youyudoc && gitbook build");
 
             //删除lock文件
